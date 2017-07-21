@@ -1,0 +1,4 @@
+--langdef=jsx
+--langmap=jsx:.jsx
+--regex-jsx=/class[ \t]+([A-Z]+[a-zA-Z0-9_]+)/\1/c,class/
+--regex-jsx=/const[ \t]+([A-Z]+[a-zA-Z0-9_]+)/\1/c,class/
