@@ -1,0 +1,115 @@
+" Plugin directory is optional
+call plug#begin()
+
+" Declare the list of plugins.
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" List ends here. Plugins become visible to Vim after this call.
+call plug#end()
+
+:set hidden
+:set shell=/bin/zsh
+:set shellcmdflag=-ic
+:let mapleader = ","
+:set showmode
+:nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+:nnoremap <leader>sv :source $MYVIMRC<cr>
+:nnoremap <leader>H ^
+:nnoremap <leader>L $
+
+:nnoremap <leader>t :!make test<cr>
+:nnoremap <leader>e :30Lexplore<cr>
+
+:syntax enable
+:set background=light
+colorscheme solarized
+
+:nnoremap <leader>f :Explore<cr>
+:set path+=**
+:set nocompatible
+filetype plugin on
+
+" FINDING FILES:
+" Search down into subfolders
+" Provides tab-completion for all file-related tasks
+:set path+=**
+
+" Display all matching files when we tab complete
+:set wildmenu
+
+" NOW WE CAN:
+" - Hit tab to :find by partial match
+" = Use * to make it fuzzy
+"
+" THINGS TO CONSIDER:
+" - :b lets you autocomplete any open buffer
+"
+:set suffixesadd+=.js
+:set wildignore+=**/node_modules/**
+:set wildignore+=**/dist/**
+
+function Ls()
+	return system("ls -la | wc -l")
+endfunction
+
+:nnoremap - :e %:p:h<cr>
+
+:set hlsearch incsearch
+:nnoremap <esc> :nohlsearch<esc>
+:nnoremap / /\v
+:nnoremap ? ?\v
+:set ignorecase
+:set smartcase
+
+
+:nnoremap <f12> :!node --import tsx --test %:p<cr>
+
+filetype plugin indent on
+" show existing tab with 4 spaces width
+set tabstop=4
+" " when indenting with '>', use 4 spaces width
+set shiftwidth=4
+" " On pressing tab, insert 4 spaces
+set expandtab
+
+" Enable plugins and load plugin for the detected file type.
+filetype plugin on
+" Enable Omnicomplete features
+" set omnifunc=syntaxcomplete#Complete
+set omnifunc=javascriptcomplete#CompleteJS:
+
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+      silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs
+      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+        autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+let g:coc_node_path = '/Users/janusz/.nvm/versions/node/v20.11.0/bin/node'
+
+" CoC extensions
+let g:coc_global_extensions = ['coc-tsserver', 'coc-json']
+
+" Add CoC Prettier if prettier is installed
+if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
+      let g:coc_global_extensions += ['coc-prettier']
+endif
+
+" Add CoC ESLint if ESLint is installed
+if isdirectory('./node_modules') && isdirectory('./node_modules/eslint')
+      let g:coc_global_extensions += ['coc-eslint']
+endif
+
+nmap  gd <Plug>(coc-definition)
+nmap  gy <Plug>(coc-type-definition)
+nmap  gi <Plug>(coc-implementation)
+nmap  gr <Plug>(coc-references)
+
+" Remap keys for applying codeAction to the current buffer.
+nmap <leader>c  <Plug>(coc-codeaction)
+" Apply AutoFix to problem on the current line.
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+nnoremap <F2> <Plug>(coc-rename)
+
+" Format
+nmap <leader>f   :CocCommand prettier.formatFile<CR>
